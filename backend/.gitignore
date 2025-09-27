@@ -1,28 +1,35 @@
-# Logs
-logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
-
+# Dependencies
 node_modules/
-frontend/node_modules
-backend/node_modules
-dist
-dist-ssr
-*.local
 
+# Environment variables
 .env
 
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea
-.DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
+# Uploaded files (ignore actual uploaded files but keep directory structure)
+uploads/*
+!uploads/.gitkeep
+
+# Build outputs
+dist/
+build/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo

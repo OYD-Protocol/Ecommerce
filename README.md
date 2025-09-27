@@ -82,12 +82,6 @@ VITE_BACKEND_URL = "http://localhost:4000"
 ```env
 MONGODB_URI =
 
-CLOUDINARY_API_KEY =
-
-CLOUDINARY_SECRET_KEY =
-
-CLOUDINARY_CLOUD_NAME =
-
 JWT_SECRET =
 
 ADMIN_EMAIL = "admin@trendify.com" #For testing only
@@ -107,7 +101,7 @@ VITE_BACKEND_URL = "http://localhost:4000"
 
 </details>
 
-Replace the placeholder values with your actual Appwrite credentials.
+Replace the placeholder values with your actual credentials. For MongoDB, you can use a local MongoDB instance or MongoDB Atlas.
 
 **Running the Project**
 

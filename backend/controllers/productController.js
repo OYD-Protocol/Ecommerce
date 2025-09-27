@@ -1,5 +1,6 @@
-import { v2 as cloudinary } from "cloudinary";
 import productModel from "../models/productModel.js";
+import fs from "fs";
+import path from "path";
 
 // INFO: Route for adding a product
 const addProduct = async (req, res) => {
@@ -23,14 +24,25 @@ const addProduct = async (req, res) => {
       (image) => image !== undefined
     );
 
-    let imageUrls = await Promise.all(
-      productImages.map(async (image) => {
-        let result = await cloudinary.uploader.upload(image.path, {
-          resource_type: "image",
-        });
-        return result.secure_url;
-      })
-    );
+    let imageUrls = productImages.map((image) => {
+      // Create a unique filename
+      const timestamp = Date.now();
+      const extension = path.extname(image.originalname);
+      const filename = `product_${timestamp}_${Math.random().toString(36).substring(7)}${extension}`;
+      
+      // Create uploads directory if it doesn't exist
+      const uploadsDir = path.join(process.cwd(), 'uploads');
+      if (!fs.existsSync(uploadsDir)) {
+        fs.mkdirSync(uploadsDir, { recursive: true });
+      }
+      
+      // Move file to uploads directory
+      const newPath = path.join(uploadsDir, filename);
+      fs.renameSync(image.path, newPath);
+      
+      // Return the relative URL path
+      return `/uploads/${filename}`;
+    });
 
     const productData = {
       name,
