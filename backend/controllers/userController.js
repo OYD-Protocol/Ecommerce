@@ -40,7 +40,7 @@ const loginUser = async (req, res) => {
 // INFO: Route for user registration
 const registerUser = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, isVerified, verificationData, dataSharingConsent } = req.body;
 
     // INFO: Check if user already exists
     const userExists = await userModel.findOne({ email });
@@ -61,6 +61,14 @@ const registerUser = async (req, res) => {
       });
     }
 
+    // INFO: Check if user is verified via Self protocol
+    if (!isVerified) {
+      return res.status(400).json({
+        success: false,
+        message: "Identity verification required. Please verify using Self protocol.",
+      });
+    }
+
     // INFO: Hashing user password
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
@@ -70,6 +78,9 @@ const registerUser = async (req, res) => {
       name,
       email,
       password: hashedPassword,
+      isVerified: true, // User must be verified to register
+      verificationData: verificationData || { timestamp: new Date().toISOString(), method: 'self_protocol' },
+      dataSharingConsent: dataSharingConsent || false,
     });
 
     // INFO: Save user to database

@@ -19,6 +19,22 @@ const userSchema = new mongoose.Schema(
       type: Object,
       default: {},
     },
+    isVerified: {
+      type: Boolean,
+      default: false,
+    },
+    verificationData: {
+      type: Object,
+      default: null,
+    },
+    selfId: {
+      type: String,
+      default: null,
+    },
+    dataSharingConsent: {
+      type: Boolean,
+      default: false,
+    },
   },
   { minimize: false }
 );
