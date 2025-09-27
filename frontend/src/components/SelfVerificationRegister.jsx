@@ -5,13 +5,14 @@ import {
   countries, 
   getUniversalLink,
 } from "@selfxyz/qrcode";
+import { v4 as uuidv4 } from "uuid";
 
 const SelfVerificationRegister = ({ onVerificationSuccess, onVerificationError }) => {
   const [linkCopied, setLinkCopied] = useState(false);
   const [selfApp, setSelfApp] = useState(null);
   const [universalLink, setUniversalLink] = useState("");
   const [verificationStatus, setVerificationStatus] = useState("pending"); // "pending", "verifying", "success", "failed"
-  const [userId] = useState("0x1a8be8c3e61f6426a601d2f8d20b2cd7b011dcfc");
+  const [userId] = useState(() => uuidv4());
 
   // Use useMemo to cache the array to avoid creating a new array on each render
   const excludedCountries = useMemo(() => [countries.UNITED_STATES], []);
