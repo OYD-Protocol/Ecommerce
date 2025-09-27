@@ -175,7 +175,7 @@ const Login = () => {
                 Do you want to earn cashback by sharing your data on OYD dataDAO?
                 <br />
                 <span className="text-xs text-gray-500">
-                  By checking this box, you consent to share anonymized data to earn rewards through our data marketplace.
+                  By checking this box, you consent to share data to earn rewards through our data marketplace.
                 </span>
               </span>
             </label>
