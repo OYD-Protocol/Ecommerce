@@ -4,6 +4,7 @@ import "dotenv/config";
 import connectDB from "./config/mongodb.js";
 import userRouter from "./routes/userRoute.js";
 import productRouter from "./routes/productRoute.js";
+import analyticsRouter from "./routes/analyticsRoute.js";
 
 // INFO: Create express app
 const app = express();
@@ -20,6 +21,7 @@ app.use('/uploads', express.static('uploads'));
 // INFO: API endpoints
 app.use("/api/user", userRouter);
 app.use("/api/product", productRouter);
+app.use("/api/analytics", analyticsRouter);
 
 // INFO: Default route
 app.get("/", (req, res) => {

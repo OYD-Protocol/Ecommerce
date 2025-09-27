@@ -1,10 +1,69 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { ShopContext } from "../context/ShopContext";
+
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 const Login = () => {
+  const { token, login, navigate, trackUserAction } = useContext(ShopContext);
   const [currentState, setCurrentState] = useState("Sign Up");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  useEffect(() => {
+    if (token) {
+      navigate("/");
+    }
+  }, [token, navigate]);
 
   const onSubmitHandler = async (event) => {
     event.preventDefault();
+    
+    try {
+      if (currentState === "Sign Up") {
+        // User Registration
+        const response = await axios.post(`${backendUrl}/api/user/register`, {
+          name,
+          email,
+          password,
+        });
+
+        if (response.data.success) {
+          toast.success("Registration successful! Please login.");
+          // Track registration action
+          trackUserAction('user_register');
+          setCurrentState("Login");
+          setName("");
+          setEmail("");
+          setPassword("");
+        } else {
+          toast.error(response.data.message || "Registration failed");
+        }
+      } else {
+        // User Login
+        const response = await axios.post(`${backendUrl}/api/user/login`, {
+          email,
+          password,
+        });
+
+        if (response.data.success) {
+          login(response.data.token);
+          toast.success("Login successful!");
+          // Track login action
+          setTimeout(() => {
+            trackUserAction('user_login');
+          }, 100);
+          navigate("/");
+        } else {
+          toast.error(response.data.message || "Login failed");
+        }
+      }
+    } catch (error) {
+      console.error("Auth error:", error);
+      toast.error(error.response?.data?.message || "Something went wrong. Please try again.");
+    }
   }
 
   return (
@@ -20,6 +79,8 @@ const Login = () => {
           type="text"
           className="w-full px-3 py-2 border border-gray-800"
           placeholder="John Doe"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
           required
         />
       )}
@@ -27,12 +88,16 @@ const Login = () => {
         type="email"
         className="w-full px-3 py-2 border border-gray-800"
         placeholder="hello@gmail.com"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
         required
       />
       <input
         type="password"
         className="w-full px-3 py-2 border border-gray-800"
         placeholder="Password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
         required
       />
       <div className="flex justify-between w-full text-sm mt-[-8px]">

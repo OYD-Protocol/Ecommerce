@@ -30,8 +30,17 @@ const Sidebar = () => {
           }
           to={"/orders"}
         >
-          <img className="w-6 h-6" src={assets.order_icon} alt="Add Products" />
+          <img className="w-6 h-6" src={assets.order_icon} alt="View Orders" />
           <p className="hidden text-lg font-semibold md:block">View Orders</p>
+        </NavLink>
+        <NavLink
+          className={
+            "flex items-center gap-3 border border-gray-500 border-r-0 px-3 py-2 rounded-lg bg-gray-200"
+          }
+          to={"/analytics"}
+        >
+          <img className="w-6 h-6" src={assets.parcel_icon} alt="Analytics" />
+          <p className="hidden text-lg font-semibold md:block">User Analytics</p>
         </NavLink>
       </div>
     </div>

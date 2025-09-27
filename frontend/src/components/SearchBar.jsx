@@ -5,9 +5,24 @@ import { useLocation } from 'react-router-dom';
 
 const SearchBar = () => {
 
-    const {search, setSearch, showSearch, setShowSearch} = useContext(ShopContext);
+    const {search, setSearch, showSearch, setShowSearch, trackUserAction} = useContext(ShopContext);
     const [visible, setVisible] = useState(false);
     const location = useLocation();
+
+    // Track search when user types
+    const handleSearchChange = (e) => {
+        const searchTerm = e.target.value;
+        setSearch(searchTerm);
+        
+        // Track search after user stops typing for 500ms
+        if (searchTerm.length > 2) {
+            setTimeout(() => {
+                trackUserAction('product_search', {
+                    searchTerm: searchTerm
+                });
+            }, 500);
+        }
+    };
 
     useEffect(() => {
         if (location.pathname.includes('collection')) {
@@ -22,7 +37,7 @@ const SearchBar = () => {
         <div className='inline-flex items-center justify-center w-3/4 px-5 py-2 mx-3 my-5 border border-gray-400 rounded-full sm:w-1/2'>
             <input 
                 value={search} 
-                onChange={(e) => setSearch(e.target.value)} 
+                onChange={handleSearchChange} 
                 className='flex-1 text-sm outline-none bg-inherit' 
                 type="text" placeholder='Search...' 
             />
